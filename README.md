@@ -4,23 +4,23 @@ Material Designed 风格的，使用 vue.js 的简易 novel AI 前端。
 
 ## 功能列表
 
-没啥功能。
+没啥功能。最基础的 text2img 。
 
 ## 使用
 
-```
+```sh
 npm install
 ```
 
 启动开发服务器：
 
-```
+```sh
 npm run serve
 ```
 
 构建静态文件：
 
-```
+```sh
 npm run build
 ```
 
