@@ -134,14 +134,19 @@
                         <img style="max-width: 220px; max-height: 240px;object-fit: contain"
                              alt="image result" :src="item.data"/>
                       </v-list-item-content>
-                      <v-list-item-action>
+                      <v-list-item-action class="ma-0">
                         <v-btn color="success" small icon @click="saveImage(key)">
                           <v-icon>mdi-content-save</v-icon>
                         </v-btn>
                       </v-list-item-action>
-                      <v-list-item-action>
+                      <v-list-item-action class="ma-0">
                         <v-btn color="error" small icon @click="removeImage(key)">
                           <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                      </v-list-item-action>
+                      <v-list-item-action class="ma-0">
+                        <v-btn color="primary" small icon @click="openImage(key)">
+                          <v-icon>mdi-open-in-new</v-icon>
                         </v-btn>
                       </v-list-item-action>
                     </v-list-item>
@@ -188,13 +193,13 @@ export default {
     backend: {
       url: 'http://localhost:8000/',
       payload: {
-        prompt: "masterpiece, best quality, 1girl, cute, school uniform, outside",
+        prompt: "1girl, cute, school uniform, outside",
         uc: "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry",
         seed: 114514,
         n_samples: 1,
         sampler: "k_euler_ancestral",
-        width: 288,
-        height: 512,
+        width: 512,
+        height: 768,
         scale: 8,
         step: 22
       }
@@ -217,7 +222,14 @@ export default {
         this.backend.url = this.backend.url + '/';
       }
 
-      axios.post(this.backend.url + 'generate', this.backend.payload)
+      // copy payload
+      const payload = {};
+      for (const key in this.backend.payload) {
+        payload[key] = this.backend.payload[key];
+      }
+      payload['prompt'] = "masterpiece, best quality, " + payload['prompt'];
+
+      axios.post(this.backend.url + 'generate', payload)
           .then(response => {
             if (response['status'] !== 200 || response['data']['error']) {
               // http error

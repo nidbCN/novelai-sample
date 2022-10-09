@@ -3,13 +3,13 @@ export default {
         backend: {
             url: "http://localhost:8000",
             payload: {
-                prompt: "masterpiece, best quality, 1girl, cute, school uniform, outside",
+                prompt: "1girl, cute, school uniform, outside",
                 uc: "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry",
                 seed: 114514,
                 n_samples: 1,
                 sampler: "k_euler_ancestral",
-                width: 288,
-                height: 512,
+                width: 512,
+                height: 768,
                 scale: 8,
                 step: 22
             }
