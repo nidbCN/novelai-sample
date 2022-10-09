@@ -1,13 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-        app
-        color="primary"
-        dark
-    >
       <NavBar/>
-    </v-app-bar>
-
     <v-main>
       <MainPage/>
     </v-main>
