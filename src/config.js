@@ -8,7 +8,7 @@ export default {
                 seed: 114514,
                 n_samples: 1,
                 sampler: "k_euler_ancestral",
-                width: 256,
+                width: 288,
                 height: 512,
                 scale: 8,
                 step: 22
