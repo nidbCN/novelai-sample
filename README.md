@@ -1,24 +1,25 @@
 # novelai-sample
 
-## Project setup
+Material Designed 风格的，使用 vue.js 的简易 novel AI 前端。
+
+## 功能列表
+
+没啥功能。
+
+## 使用
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+启动开发服务器：
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+构建静态文件：
+
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
