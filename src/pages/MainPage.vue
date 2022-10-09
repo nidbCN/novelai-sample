@@ -107,17 +107,13 @@
           <v-row class="my-4">
             <v-card width="100%">
               <v-card-actions>
-                <v-btn color="primary" @click="generate" :loading="status.requestLock">
+                <v-btn color="primary" @click="generateImage" :loading="status.requestLock">
                   <v-icon>mdi-cloud-download</v-icon>
                   生成图片
                 </v-btn>
-                <v-btn color="error" @click="clearPicture">
+                <v-btn color="error" @click="removeAllImage">
                   <v-icon>mdi-delete-empty</v-icon>
                   清空图片
-                </v-btn>
-                <v-btn color="success" @click="clearPicture">
-                  <v-icon>mdi-content-save</v-icon>
-                  保存全部
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -132,12 +128,24 @@
                     tile
                     class="overflow-y-auto"
                 >
-                  <v-list-item v-for="(item, key) in status.images" :key="key">
-                    <v-list-item-content>
-                      <img alt="image result" class="my-2" style="max-height: 260px; object-fit: contain"
-                           :src="item.data"/>
-                    </v-list-item-content>
-                  </v-list-item>
+                  <v-list>
+                    <v-list-item two-line v-for="(item, key) in status.imageList" :key="key">
+                      <v-list-item-content>
+                        <img style="max-width: 220px; max-height: 240px;object-fit: contain"
+                             alt="image result" :src="item.data"/>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        <v-btn color="success" small icon @click="saveImage(key)">
+                          <v-icon>mdi-content-save</v-icon>
+                        </v-btn>
+                      </v-list-item-action>
+                      <v-list-item-action>
+                        <v-btn color="error" small icon @click="removeImage(key)">
+                          <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                      </v-list-item-action>
+                    </v-list-item>
+                  </v-list>
                 </v-card>
               </v-card-text>
             </v-card>
@@ -196,7 +204,6 @@ export default {
     },
     status: {
       imageList: [],
-      images: [],
       requestLock: false,
     }
   }),
@@ -204,7 +211,7 @@ export default {
     this.backend = config.default.backend;
   },
   methods: {
-    generate: function () {
+    generateImage: function () {
       this.status.requestLock = true;
       if (!this.backend.url.endsWith('/')) {
         this.backend.url = this.backend.url + '/';
@@ -220,7 +227,7 @@ export default {
               const outputList = response['data']['output'];
 
               outputList.forEach(str => {
-                this.status.images.unshift({
+                this.status.imageList.unshift({
                   data: "data:image/png;base64," + str,
                   seed: this.backend.payload.seed,
                 });
@@ -240,8 +247,28 @@ export default {
             this.status.requestLock = false;
           })
     },
-    clearPicture: function () {
-      this.status.images.splice(0, this.status.images.length);
+    removeAllImage: function () {
+      this.status.imageList.splice(0, this.status.imageList.length);
+    },
+    removeImage: function (index) {
+      this.status.imageList.splice(index, 1);
+    },
+    openImage: function (index) {
+      const linkElement = document.createElement('a');
+
+      linkElement.href = this.status.imageList[index]['data'];
+      linkElement.target = "_blank";
+
+      linkElement.click();
+    },
+    saveImage: function (index) {
+      const linkElement = document.createElement('a');
+      const imageData = this.status.imageList[index]['data'];
+
+      linkElement.href = imageData;
+      linkElement.download = 'image-' + imageData.substring(imageData.length - 6) + '.png';
+
+      linkElement.click();
     }
   }
 }
