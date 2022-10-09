@@ -19,7 +19,7 @@
                       </v-col>
                     </v-row>
                     <v-row class="mx-16">
-                      <v-col cols="4">
+                      <v-col cols="3">
                         <v-text-field
                             v-model="backend.payload.width"
                             :counter="4"
@@ -27,7 +27,7 @@
                             required
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="4">
+                      <v-col cols="3">
                         <v-text-field
                             v-model="backend.payload.height"
                             :counter="4"
@@ -35,7 +35,7 @@
                             required
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="4">
+                      <v-col cols="6">
                         <v-select
                             :items="options.sampler"
                             v-model="backend.payload.sampler"
@@ -64,21 +64,30 @@
                       </v-col>
                     </v-row>
                     <v-row class="mx-16">
-                      <v-col cols="4">
+                      <v-col cols="3">
                         <v-text-field
                             v-model="backend.payload.step"
                             label="step"
                         >
                         </v-text-field>
                       </v-col>
-                      <v-col cols="4">
+                      <v-col cols="3">
                         <v-text-field
                             v-model="backend.payload.scale"
                             label="scale"
                         >
                         </v-text-field>
                       </v-col>
-                      <v-col cols="4">
+                      <v-col cols="3">
+                        <v-text-field
+                            v-model="backend.payload.seed"
+                            append-icon="mdi-refresh"
+                            @click:append="backend.payload.seed =  parseInt(Math.random() * 1000000, 10)"
+                            label="种子"
+                        >
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="3">
                         <v-text-field
                             v-model="backend.payload.n_samples"
                             label="张数"
@@ -125,7 +134,8 @@
                 >
                   <v-list-item v-for="(item, key) in status.images" :key="key">
                     <v-list-item-content>
-                      <img alt="image result" class="my-2" style="max-height: 260px; object-fit: contain" :src="item"/>
+                      <img alt="image result" class="my-2" style="max-height: 260px; object-fit: contain"
+                           :src="item.data"/>
                     </v-list-item-content>
                   </v-list-item>
                 </v-card>
@@ -185,6 +195,7 @@ export default {
       sampler: ['plms', 'ddim', 'k_euler', 'k_euler_ancestral', 'k_heun', 'k_dpm_2', 'k_dpm_2_ancestral', 'k_lms'],
     },
     status: {
+      imageList: [],
       images: [],
       requestLock: false,
     }
@@ -199,24 +210,34 @@ export default {
         this.backend.url = this.backend.url + '/';
       }
 
-      this.backend.payload.seed = parseInt(Math.random() * 10000, 10);
-
       axios.post(this.backend.url + 'generate', this.backend.payload)
           .then(response => {
-            if (response['status'] !== 200 || !response['data'] || !response['data']['output']) {
-              // error
-              alert("非200的返回值，可能是出错了");
+            if (response['status'] !== 200 || response['data']['error']) {
+              // http error
+              alert("非200的返回值，可能是出错了\n" + response['data']['error']);
             } else {
+              // request complete
               const outputList = response['data']['output'];
+
               outputList.forEach(str => {
-                this.status.images.unshift("data:image/png;base64," + str);
+                this.status.images.unshift({
+                  data: "data:image/png;base64," + str,
+                  seed: this.backend.payload.seed,
+                });
               });
+
+              // re-generate seed
+              this.backend.payload.seed = parseInt(Math.random() * 1000000, 10);
             }
+
+            // unlock
             this.status.requestLock = false;
           })
           .catch(error => {
-            alert("由于某些原因无法连接后端（通常是由于显存不足），请等待数分钟后端重启。");
-            console.log(error);
+            alert("由于某些原因无法连接后端（通常是由于显存不足），请等待数分钟后端重启\n" + error['message']);
+
+            // unlock
+            this.status.requestLock = false;
           })
     },
     clearPicture: function () {
