@@ -98,29 +98,50 @@
           <v-row class="my-4">
             <v-card width="100%">
               <v-card-actions>
-                <v-btn color="primary" @click="generate">发起请求</v-btn>
-                <v-btn color="secondary" @click="clearPicture">清空图片</v-btn>
+                <v-btn color="primary" @click="generate">
+                  <v-icon>mdi-cloud-download</v-icon>
+                  生成图片
+                </v-btn>
+                <v-btn color="error" @click="clearPicture">
+                  <v-icon>mdi-delete-empty</v-icon>
+                  清空图片
+                </v-btn>
+                <v-btn color="success" @click="clearPicture">
+                  <v-icon>mdi-delete-empty</v-icon>
+                  保存全部
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-row>
           <v-row class="my-4">
-            <v-card width="100%" height="370px" class="overflow-y-auto">
+            <v-card width="100%" height="370px">
               <v-card-title>图像</v-card-title>
               <v-card-text>
-                <v-img class="my-2" :contain="true" max-width="100%" v-for="(item, key) in images" :src="item"
-                       :key="key"></v-img>
+                <v-card
+                    max-height="300px"
+                    flat
+                    tile
+                    class="overflow-y-auto"
+                >
+                  <v-list-item v-for="(item, key) in images" :key="key" >
+                    <v-list-item-content>
+                      <img alt="image result" class="my-2" style="max-height: 260px; object-fit: contain" :src="item"/>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-card>
               </v-card-text>
             </v-card>
           </v-row>
 
           <v-row class="my-4">
-            <v-card width="100%" height="260px" class="overflow-y-auto ">
+            <v-card width="100%" height="260px" >
               <v-card-title>请求</v-card-title>
               <v-card-text>
                 <v-card
                     dark
                     flat
                     tile
+                    class="overflow-y-auto"
                 >
                   <v-window :dark="true">
                     <v-window-item> {{ JSON.stringify(backend.payload, null, 2) }}</v-window-item>
