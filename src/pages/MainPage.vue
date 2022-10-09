@@ -168,7 +168,7 @@ export default {
 
   data: () => ({
     backend: {
-      url: 'http://localhost:8000/generate',
+      url: 'http://localhost:8000/',
       payload: {
         prompt: "masterpiece, best quality, 1girl, cute, school uniform, outside",
         uc: "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry",
@@ -195,10 +195,13 @@ export default {
   methods: {
     generate: function () {
       this.status.requestLock = true;
+      if (!this.backend.url.endsWith('/')) {
+        this.backend.url = this.backend.url + '/';
+      }
 
       this.backend.payload.seed = parseInt(Math.random() * 10000, 10);
 
-      axios.post(this.backend.url, this.backend.payload)
+      axios.post(this.backend.url + 'generate', this.backend.payload)
           .then(response => {
             if (response['status'] !== 200 || !response['data'] || !response['data']['output']) {
               // error
