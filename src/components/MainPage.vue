@@ -98,7 +98,7 @@
           <v-row class="my-4">
             <v-card width="100%">
               <v-card-actions>
-                <v-btn color="primary" @click="generate">
+                <v-btn color="primary" @click="generate" :loading="requestLock">
                   <v-icon>mdi-cloud-download</v-icon>
                   生成图片
                 </v-btn>
@@ -107,7 +107,7 @@
                   清空图片
                 </v-btn>
                 <v-btn color="success" @click="clearPicture">
-                  <v-icon>mdi-delete-empty</v-icon>
+                  <v-icon>mdi-content-save</v-icon>
                   保存全部
                 </v-btn>
               </v-card-actions>
@@ -123,7 +123,7 @@
                     tile
                     class="overflow-y-auto"
                 >
-                  <v-list-item v-for="(item, key) in images" :key="key" >
+                  <v-list-item v-for="(item, key) in images" :key="key">
                     <v-list-item-content>
                       <img alt="image result" class="my-2" style="max-height: 260px; object-fit: contain" :src="item"/>
                     </v-list-item-content>
@@ -134,7 +134,7 @@
           </v-row>
 
           <v-row class="my-4">
-            <v-card width="100%" height="260px" >
+            <v-card width="100%" height="260px">
               <v-card-title>请求</v-card-title>
               <v-card-text>
                 <v-card
