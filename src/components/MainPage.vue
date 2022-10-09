@@ -37,7 +37,7 @@
                       </v-col>
                       <v-col cols="4">
                         <v-select
-                            :items="sampler"
+                            :items="options.sampler"
                             v-model="backend.payload.sampler"
                             label="采样方法"
                         ></v-select>
@@ -98,7 +98,7 @@
           <v-row class="my-4">
             <v-card width="100%">
               <v-card-actions>
-                <v-btn color="primary" @click="generate" :loading="requestLock">
+                <v-btn color="primary" @click="generate" :loading="status.requestLock">
                   <v-icon>mdi-cloud-download</v-icon>
                   生成图片
                 </v-btn>
@@ -123,7 +123,7 @@
                     tile
                     class="overflow-y-auto"
                 >
-                  <v-list-item v-for="(item, key) in images" :key="key">
+                  <v-list-item v-for="(item, key) in status.images" :key="key">
                     <v-list-item-content>
                       <img alt="image result" class="my-2" style="max-height: 260px; object-fit: contain" :src="item"/>
                     </v-list-item-content>
@@ -141,10 +141,13 @@
                     dark
                     flat
                     tile
+                    max-height="180px"
                     class="overflow-y-auto"
                 >
                   <v-window :dark="true">
-                    <v-window-item> {{ JSON.stringify(backend.payload, null, 2) }}</v-window-item>
+                    <v-window-item class="overflow-visible overflow-x-auto">
+                      <pre class="ma-4">{{ JSON.stringify(backend.payload, null, 2) }}</pre>
+                    </v-window-item>
                   </v-window>
                 </v-card>
               </v-card-text>
@@ -158,6 +161,7 @@
 
 <script>
 import axios from 'axios';
+import config from "@/config";
 
 export default {
   name: 'MainPage',
@@ -177,13 +181,20 @@ export default {
         step: 22
       }
     },
-    sampler: ['plms', 'ddim', 'k_euler', 'k_euler_ancestral', 'k_heun', 'k_dpm_2', 'k_dpm_2_ancestral', 'k_lms'],
-    images: [],
-    requestLock: false,
+    options: {
+      sampler: ['plms', 'ddim', 'k_euler', 'k_euler_ancestral', 'k_heun', 'k_dpm_2', 'k_dpm_2_ancestral', 'k_lms'],
+    },
+    status: {
+      images: [],
+      requestLock: false,
+    }
   }),
+  mounted() {
+    this.backend = config.default.backend;
+  },
   methods: {
     generate: function () {
-      this.requestLock = true;
+      this.status.requestLock = true;
 
       this.backend.payload.seed = parseInt(Math.random() * 10000, 10);
 
@@ -195,12 +206,10 @@ export default {
             } else {
               const outputList = response['data']['output'];
               outputList.forEach(str => {
-                this.images.unshift("data:image/png;base64," + str);
+                this.status.images.unshift("data:image/png;base64," + str);
               });
-
-              console.log(this.images);
             }
-            this.requestLock = false;
+            this.status.requestLock = false;
           })
           .catch(error => {
             alert("由于某些原因无法连接后端（通常是由于显存不足），请等待数分钟后端重启。");
@@ -208,7 +217,7 @@ export default {
           })
     },
     clearPicture: function () {
-      this.images.splice(0, this.images.length);
+      this.status.images.splice(0, this.status.images.length);
     }
   }
 }
