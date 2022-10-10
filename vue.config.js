@@ -13,6 +13,4 @@ module.exports = defineConfig({
   }
 })
 
-module.exports = {
-  publicPath: '/novelai-sample/'
-}
+module.exports={publicPath:'/novelai-sample/'}
