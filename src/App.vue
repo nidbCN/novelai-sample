@@ -2,13 +2,12 @@
   <v-app>
       <NavBar/>
     <v-main>
-      <MainPage/>
+      <router-view/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import MainPage from './pages/MainPage';
 import NavBar from "@/components/NavBar";
 
 export default {
@@ -16,7 +15,6 @@ export default {
 
   components: {
     NavBar,
-    MainPage,
   },
 };
 </script>

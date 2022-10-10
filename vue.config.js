@@ -1,16 +1,14 @@
-const { defineConfig } = require('@vue/cli-service')
+const {defineConfig} = require('@vue/cli-service')
 
 module.exports = defineConfig({
-  transpileDependencies: [
-    'vuetify'
-  ],
-  chainWebpack: config => {
-    config.plugin('html').tap(args => {
-      args[0].title = 'Novel AI frontend'
+    transpileDependencies: [
+        'vuetify'
+    ],
+    chainWebpack: config => {
+        config.plugin('html').tap(args => {
+            args[0].title = 'Novel AI frontend'
 
-      return args
-    })
-  }
+            return args
+        })
+    }
 })
-
-module.exports={publicPath:'/novelai-sample/'}

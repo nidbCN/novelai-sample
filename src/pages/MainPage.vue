@@ -210,6 +210,8 @@ export default {
   mounted() {
     this.backend = config.default.backend;
 
+    console.log(this.$route.query['backend_url'])
+
     if (this.$route.query['backend_url']) {
       this.backend.url = this.$route.query['backend_url'];
     }
