@@ -1,108 +1,106 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="8">
+      <v-col cols="7">
         <v-container>
           <v-row class="my-4">
             <v-card width="100%">
               <v-card-title>设置</v-card-title>
               <v-card-text>
-                <v-container>
-                  <v-form>
-                    <v-row class="mx-16">
-                      <v-col cols="12">
-                        <v-text-field
-                            v-model="backend.url"
-                            label="后端地址"
-                            required
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row class="mx-16">
-                      <v-col cols="3">
-                        <v-text-field
-                            v-model="backend.payload.width"
-                            :counter="4"
-                            label="宽度"
-                            required
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="3">
-                        <v-text-field
-                            v-model="backend.payload.height"
-                            :counter="4"
-                            label="高度"
-                            required
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="6">
-                        <v-select
-                            :items="options.sampler"
-                            v-model="backend.payload.sampler"
-                            label="采样方法"
-                        ></v-select>
-                      </v-col>
-                    </v-row>
-                    <v-row class="mx-16">
-                      <v-col cols="12">
-                        <v-textarea
-                            v-model="backend.payload.prompt"
-                            rows="5"
-                            label="标签"
-                        >
-                        </v-textarea>
-                      </v-col>
-                    </v-row>
-                    <v-row class="mx-16">
-                      <v-col cols="12">
-                        <v-textarea
-                            v-model="backend.payload.uc"
-                            rows="3"
-                            label="负面标签"
-                        >
-                        </v-textarea>
-                      </v-col>
-                    </v-row>
-                    <v-row class="mx-16">
-                      <v-col cols="3">
-                        <v-text-field
-                            v-model="backend.payload.step"
-                            label="step"
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="3">
-                        <v-text-field
-                            v-model="backend.payload.scale"
-                            label="scale"
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="3">
-                        <v-text-field
-                            v-model="backend.payload.seed"
-                            append-icon="mdi-refresh"
-                            @click:append="backend.payload.seed =  parseInt(Math.random() * 1000000, 10)"
-                            label="种子"
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="3">
-                        <v-text-field
-                            v-model="backend.payload.n_samples"
-                            label="张数"
-                        >
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-form>
-                </v-container>
+                <v-form>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field
+                          v-model="backend.url"
+                          label="后端地址"
+                          required
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <v-text-field
+                          v-model="backend.payload.width"
+                          :counter="4"
+                          label="宽度"
+                          required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field
+                          v-model="backend.payload.height"
+                          :counter="4"
+                          label="高度"
+                          required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-select
+                          :items="options.sampler"
+                          v-model="backend.payload.sampler"
+                          label="采样方法"
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-textarea
+                          v-model="backend.payload.prompt"
+                          rows="5"
+                          label="标签"
+                      >
+                      </v-textarea>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-textarea
+                          v-model="backend.payload.uc"
+                          rows="3"
+                          label="负面标签"
+                      >
+                      </v-textarea>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="3">
+                      <v-text-field
+                          v-model="backend.payload.step"
+                          label="step"
+                      >
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field
+                          v-model="backend.payload.scale"
+                          label="scale"
+                      >
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field
+                          v-model="backend.payload.seed"
+                          append-icon="mdi-refresh"
+                          @click:append="backend.payload.seed =  parseInt(Math.random() * 1000000, 10)"
+                          label="种子"
+                      >
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-text-field
+                          v-model="backend.payload.n_samples"
+                          label="张数"
+                      >
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-form>
               </v-card-text>
             </v-card>
           </v-row>
         </v-container>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="5">
         <v-container>
           <v-row class="my-4">
             <v-card width="100%">
@@ -121,42 +119,35 @@
           <v-row class="my-4">
             <v-card width="100%" height="370px">
               <v-card-title>图像</v-card-title>
-              <v-card-text>
-                <v-card
-                    max-height="300px"
-                    flat
-                    tile
-                    class="overflow-y-auto"
-                >
 
-                  <v-list>
-                    <v-list-item one-line v-for="(item, key) in status.imageList" :key="key">
+              <v-card
+                  max-height="300px"
+                  flat
+                  tile
+                  class="overflow-y-auto"
+              >
+                <v-container v-for="(item, key) in status.imageList" :key="key">
+                  <v-card tile>
+                    <img style="width: 100%; max-height: 200px;object-fit: contain"
+                         alt="image result" :src="item.data"/>
 
-                      <v-list-item-content>
-                        <img style="width: 100%; max-height: 240px;object-fit: contain"
-                             alt="image result" :src="item.data"/>
-                        <v-list-item-subtitle  class="text-right">seed: <code>{{ item.seed }}</code></v-list-item-subtitle>
-                      </v-list-item-content>
+                    <v-card-text class="cyan lighten-5">
+                      <v-btn color="success" small icon @click="saveImage(key)">
+                        <v-icon>mdi-content-save</v-icon>
+                      </v-btn>
+                      <v-btn color="error" small icon @click="removeImage(key)">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                      <v-btn color="primary" small icon @click="openImage(key)">
+                        <v-icon>mdi-open-in-new</v-icon>
+                      </v-btn>
 
-                      <v-list-item-action class="ma-0">
-                        <v-btn color="success" small icon @click="saveImage(key)">
-                          <v-icon>mdi-content-save</v-icon>
-                        </v-btn>
-                      </v-list-item-action>
-                      <v-list-item-action class="ma-0">
-                        <v-btn color="error" small icon @click="removeImage(key)">
-                          <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                      </v-list-item-action>
-                      <v-list-item-action class="ma-0">
-                        <v-btn color="primary" small icon @click="openImage(key)">
-                          <v-icon>mdi-open-in-new</v-icon>
-                        </v-btn>
-                      </v-list-item-action>
-                    </v-list-item>
-                  </v-list>
-                </v-card>
-              </v-card-text>
+                      <span class="float-right">seed: <code>{{ item.seed }}</code></span>
+                    </v-card-text>
+                  </v-card>
+                </v-container>
+              </v-card>
+
             </v-card>
           </v-row>
 
