@@ -39,10 +39,10 @@ export default {
                 seed: 114514,
                 n_samples: 1,
                 sampler: "k_euler_ancestral",
-                width: 288,
-                height: 512,
+                width: 384,
+                height: 576,
                 scale: 8,
-                step: 22
+                steps: 22
             }
         },
         website: {
