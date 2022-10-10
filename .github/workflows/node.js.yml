@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+      - run: npm install
+      - run: echo module.exports={publicPath:'/novelai-sample/'} >> vue.config.js
       - run: npm run build
 
   # Deployment job
