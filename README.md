@@ -26,7 +26,10 @@ Material Designed 风格的，使用 vue.js 的简易 novel AI 前端。
 
 ### 直接使用
 
+[novel-ai.gaein.cn](http://novel-ai.gaein.cn/)
 [Github Pages](https://nidbcn.github.io/novelai-sample/)
+
+> 为什么不使用 Github Pages 和 HTTPS ? 如果后端使用 HTTP 协议，发送到后端的请求的 POST 请求会被浏览器拦截——而大部分人不会给这个后端部署反代以及 HTTPS。
 
 ### 自行部署
 
