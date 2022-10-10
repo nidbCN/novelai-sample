@@ -11,7 +11,7 @@ export default {
                 width: 512,
                 height: 768,
                 scale: 8,
-                step: 22
+                steps: 22
             }
         },
         website: {
