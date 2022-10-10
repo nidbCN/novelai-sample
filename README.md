@@ -8,6 +8,10 @@ Material Designed 风格的，使用 vue.js 的简易 novel AI 前端。
 
 ## 使用
 
+### 直接使用
+
+[Github Pages](https://nidbcn.github.io/novelai-sample/)
+
 ```sh
 npm install
 ```
