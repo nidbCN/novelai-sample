@@ -128,12 +128,16 @@
                     tile
                     class="overflow-y-auto"
                 >
+
                   <v-list>
-                    <v-list-item two-line v-for="(item, key) in status.imageList" :key="key">
+                    <v-list-item one-line v-for="(item, key) in status.imageList" :key="key">
+
                       <v-list-item-content>
-                        <img style="max-width: 220px; max-height: 240px;object-fit: contain"
+                        <img style="width: 100%; max-height: 240px;object-fit: contain"
                              alt="image result" :src="item.data"/>
+                        <v-list-item-subtitle  class="text-right">seed: <code>{{ item.seed }}</code></v-list-item-subtitle>
                       </v-list-item-content>
+
                       <v-list-item-action class="ma-0">
                         <v-btn color="success" small icon @click="saveImage(key)">
                           <v-icon>mdi-content-save</v-icon>
@@ -214,6 +218,10 @@ export default {
   }),
   mounted() {
     this.backend = config.default.backend;
+
+    if (this.$route.query['backend_url']) {
+      this.backend.url = this.$route.query['backend_url'];
+    }
   },
   methods: {
     generateImage: function () {
@@ -269,16 +277,15 @@ export default {
       const linkElement = document.createElement('a');
 
       linkElement.href = this.status.imageList[index]['data'];
-      linkElement.target = "_blank";
 
       linkElement.click();
     },
     saveImage: function (index) {
       const linkElement = document.createElement('a');
-      const imageData = this.status.imageList[index]['data'];
+      const imageItem = this.status.imageList[index];
 
-      linkElement.href = imageData;
-      linkElement.download = 'image-' + imageData.substring(imageData.length - 6) + '.png';
+      linkElement.href = imageItem['data'];
+      linkElement.download = 'image-' + imageItem['seed'] + '.png';
 
       linkElement.click();
     }
