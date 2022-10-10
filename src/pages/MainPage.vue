@@ -65,8 +65,8 @@
                   <v-row>
                     <v-col cols="3">
                       <v-text-field
-                          v-model="backend.payload.step"
-                          label="step"
+                          v-model="backend.payload.steps"
+                          label="steps"
                       >
                       </v-text-field>
                     </v-col>

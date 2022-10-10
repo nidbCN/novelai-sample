@@ -4,13 +4,35 @@ Material Designed 风格的，使用 vue.js 的简易 novel AI 前端。
 
 ## 功能列表
 
-没啥功能。最基础的 text2img 。
+对接官网后端的 文字->图片 前端界面。
+
+* 自定义后端地址；
+* 请求（`generate`接口）的 payload 生成；
+* 一张或多张图片展示、保存、清空；
+
+### text->img
+
+* 自定义宽度高度；
+* 选择采样方法；
+* 自定义 prompt；
+* 自定义 negative prompt;
+* 自动为 prompt 前添加 `masterpiece, best quality, ` （官网前端行为）
+* 自定义 steps；
+* 自定义 scale；
+* 自定义或随机种子；
+* 自定义张数；
 
 ## 使用
 
 ### 直接使用
 
 [Github Pages](https://nidbcn.github.io/novelai-sample/)
+
+### 自行部署
+
+确保需要部构建前端的服务器安装有 `nodejs`, `npm` 。
+
+进入项目目录，执行：
 
 ```sh
 npm install
@@ -28,7 +50,9 @@ npm run serve
 npm run build
 ```
 
-## 个性化配置
+构建完成后静态文件位于 `dist` 目录下，科研使用任意 web 服务器。
+
+#### 个性化配置
 
 修改 `src\config.js` 文件：
 
@@ -38,7 +62,7 @@ export default {
         backend: {
             url: "http://localhost:8000",
             payload: {
-                prompt: "masterpiece, best quality, 1girl, cute, school uniform, outside",
+                prompt: "1girl, cute, school uniform, outside",
                 uc: "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry",
                 seed: 114514,
                 n_samples: 1,
