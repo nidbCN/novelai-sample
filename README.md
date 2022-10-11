@@ -16,7 +16,7 @@ Material Designed 风格的，使用 vue.js 的简易 novel AI 前端。
 * 选择采样方法；
 * 自定义 prompt；
 * 自定义 negative prompt;
-* 自动为 prompt 前添加 `masterpiece, best quality, ` （官网前端行为）
+* 自动为 prompt 前添加 `masterpiece, best quality,` （官网前端行为）
 * 自定义 steps；
 * 自定义 scale；
 * 自定义或随机种子；
@@ -27,11 +27,16 @@ Material Designed 风格的，使用 vue.js 的简易 novel AI 前端。
 ### 直接使用
 
 [novel-ai.gaein.cn](http://novel-ai.gaein.cn/)
+
 [Github Pages](https://nidbcn.github.io/novelai-sample/)
 
-> 为什么不使用 Github Pages 和 HTTPS ? 如果后端使用 HTTP 协议，发送到后端的请求的 POST 请求会被浏览器拦截——而大部分人不会给这个后端部署反代以及 HTTPS。
+> 为什么不推荐直接使用在线？  
+> 由于 RFC-1918 （私有网络控制） 可能无法向非 HTTPS 的内网的后端发送请求。
+>
+> 为什么不使用 Github Pages 和 HTTPS ?
+> 如果后端使用 HTTP 协议，发送到后端的请求的 POST 请求会被浏览器拦截——而大部分人不会给这个后端部署反代以及 HTTPS。
 
-### 自行部署
+### 自行部署（推荐）
 
 确保需要部构建前端的服务器安装有 `nodejs`, `npm` 。
 
