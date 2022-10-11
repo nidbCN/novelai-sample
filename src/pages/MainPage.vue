@@ -14,38 +14,43 @@
               <v-card-text>
                 <v-form>
                   <v-row>
-                    <v-col cols="12">
+                    <v-col cols="8">
                       <v-text-field
                           v-model="backend.url"
                           label="后端地址"
                           required
                       ></v-text-field>
                     </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-text-field
-                          v-model="backend.payload.width"
-                          :counter="4"
-                          label="宽度"
-                          required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="3">
-                      <v-text-field
-                          v-model="backend.payload.height"
-                          :counter="4"
-                          label="高度"
-                          required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
+                    <v-col cols="4">
                       <v-select
                           :items="options.sampler"
                           v-model="backend.payload.sampler"
                           label="采样方法"
                       ></v-select>
                     </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-slider
+                          v-model="backend.payload.width"
+                          label="宽度"
+                          step="64"
+                          min="64"
+                          max="1024"
+                          thumb-label="always"
+                      ></v-slider>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-slider
+                          v-model="backend.payload.height"
+                          label="高度"
+                          step="64"
+                          min="64"
+                          max="1024"
+                          thumb-label="always"
+                      ></v-slider>
+                    </v-col>
+
                   </v-row>
                   <v-row>
                     <v-col cols="12">
@@ -68,33 +73,50 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="3">
-                      <v-text-field
+                    <v-col cols="6">
+                      <v-slider
                           v-model="backend.payload.steps"
                           label="steps"
-                      >
-                      </v-text-field>
+                          step="1"
+                          min="0"
+                          max="50"
+                          thumb-label
+                      ></v-slider>
                     </v-col>
-                    <v-col cols="3">
-                      <v-text-field
+                    <v-col cols="6">
+                      <v-slider
                           v-model="backend.payload.scale"
                           label="scale"
-                      >
-                      </v-text-field>
+                          step="1"
+                          min="0"
+                          max="30"
+                          thumb-label
+                      ></v-slider>
                     </v-col>
-                    <v-col cols="3">
+                  </v-row>
+                  <v-row>
+                    <v-col cols="4">
                       <v-text-field
+                          prepend-icon="mdi-dice-3"
                           v-model="backend.payload.seed"
                           append-icon="mdi-refresh"
-                          @click:append="backend.payload.seed =  parseInt(Math.random() * 1000000, 10)"
+                          :disabled="options.autoSeed"
+                          @click:append="backend.payload.seed = getSeed()"
                           label="种子"
                       >
                       </v-text-field>
                     </v-col>
+                    <v-col cols="5">
+                      <v-switch
+                          v-model="options.autoSeed"
+                          label="自动生成"
+                      ></v-switch>
+                    </v-col>
+
                     <v-col cols="3">
                       <v-text-field
                           v-model="backend.payload.n_samples"
-                          label="张数"
+                          label="张数(batch size)"
                       >
                       </v-text-field>
                     </v-col>
@@ -186,7 +208,13 @@ import config from "@/config";
 
 export default {
   name: 'MainPage',
+  mounted() {
+    this.backend = config.default.backend;
 
+    if (this.$route.query['backend_url']) {
+      this.backend.url = this.$route.query['backend_url'];
+    }
+  },
   data: () => ({
     backend: {
       url: 'http://localhost:8000/',
@@ -204,6 +232,7 @@ export default {
     },
     options: {
       sampler: ['plms', 'ddim', 'k_euler', 'k_euler_ancestral', 'k_heun', 'k_dpm_2', 'k_dpm_2_ancestral', 'k_lms'],
+      autoSeed: true,
     },
     status: {
       imageList: [],
@@ -211,15 +240,6 @@ export default {
       requestLock: false,
     }
   }),
-  mounted() {
-    this.backend = config.default.backend;
-
-    console.log(this.$route.query['backend_url'])
-
-    if (this.$route.query['backend_url']) {
-      this.backend.url = this.$route.query['backend_url'];
-    }
-  },
   methods: {
     generateImage: function () {
       this.status.requestLock = true;
@@ -251,7 +271,9 @@ export default {
               });
 
               // re-generate seed
-              this.backend.payload.seed = parseInt(Math.random() * 1000000, 10);
+              if (this.options.autoSeed) {
+                this.backend.payload.seed = this.getSeed();
+              }
             }
 
             // unlock
@@ -278,6 +300,10 @@ export default {
       linkElement.download = 'image-' + imageItem['seed'] + '.png';
 
       linkElement.click();
+    },
+    getSeed: function () {
+      // not lager than 2^32 -1
+      return Math.floor(Math.random() * 2147483648);
     }
   }
 }
