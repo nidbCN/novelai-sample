@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <CoolLightBox
+        :items="status.imageList"
+        :index="status.imageIndex"
+        @close="status.imageIndex = null">
+    </CoolLightBox>
     <v-row>
       <v-col cols="7">
         <v-container>
@@ -128,8 +133,9 @@
               >
                 <v-container v-for="(item, key) in status.imageList" :key="key">
                   <v-card tile>
-                    <img style="width: 100%; max-height: 200px;object-fit: contain"
-                         alt="image result" :src="item.data"/>
+                    <v-img @click="status.imageIndex = key"
+                           width="100%" max-height="200px"
+                           contain :src="item.src"></v-img>
 
                     <v-card-text class="cyan lighten-5">
                       <v-btn color="success" small icon @click="saveImage(key)">
@@ -138,11 +144,8 @@
                       <v-btn color="error" small icon @click="removeImage(key)">
                         <v-icon>mdi-delete</v-icon>
                       </v-btn>
-                      <v-btn color="primary" small icon @click="openImage(key)">
-                        <v-icon>mdi-open-in-new</v-icon>
-                      </v-btn>
 
-                      <span class="float-right">seed: <code>{{ item.seed }}</code></span>
+                      <span class="float-right"><code>{{ item.title }}</code></span>
                     </v-card-text>
                   </v-card>
                 </v-container>
@@ -204,6 +207,7 @@ export default {
     },
     status: {
       imageList: [],
+      imageIndex: null,
       requestLock: false,
     }
   }),
@@ -241,8 +245,8 @@ export default {
 
               outputList.forEach(str => {
                 this.status.imageList.unshift({
-                  data: "data:image/png;base64," + str,
-                  seed: this.backend.payload.seed,
+                  src: "data:image/png;base64," + str,
+                  title: 'seed: ' + this.backend.payload.seed
                 });
               });
 
@@ -266,18 +270,11 @@ export default {
     removeImage: function (index) {
       this.status.imageList.splice(index, 1);
     },
-    openImage: function (index) {
-      const linkElement = document.createElement('a');
-
-      linkElement.href = this.status.imageList[index]['data'];
-
-      linkElement.click();
-    },
     saveImage: function (index) {
       const linkElement = document.createElement('a');
       const imageItem = this.status.imageList[index];
 
-      linkElement.href = imageItem['data'];
+      linkElement.href = imageItem['src'];
       linkElement.download = 'image-' + imageItem['seed'] + '.png';
 
       linkElement.click();
