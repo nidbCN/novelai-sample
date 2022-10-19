@@ -55,19 +55,25 @@
                   <v-row>
                     <v-col cols="12">
                       <v-textarea
+                          clearable
                           v-model="backend.payload.prompt"
                           rows="5"
-                          label="标签"
+                          label="标签(prompt)"
                       >
                       </v-textarea>
+                      <v-switch
+                          v-model="options.autoPrompt"
+                          label="自动添加官方前端预设 prompt"
+                      ></v-switch>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
                       <v-textarea
+                          clearable
                           v-model="backend.payload.uc"
                           rows="3"
-                          label="负面标签"
+                          label="负面标签(negative prompt)"
                       >
                       </v-textarea>
                     </v-col>
@@ -106,14 +112,14 @@
                       >
                       </v-text-field>
                     </v-col>
-                    <v-col cols="5">
+                    <v-col cols="4">
                       <v-switch
                           v-model="options.autoSeed"
                           label="自动生成"
                       ></v-switch>
                     </v-col>
 
-                    <v-col cols="3">
+                    <v-col cols="4">
                       <v-text-field
                           v-model="backend.payload.n_samples"
                           label="张数(batch size)"
@@ -233,6 +239,7 @@ export default {
     options: {
       sampler: ['plms', 'ddim', 'k_euler', 'k_euler_ancestral', 'k_heun', 'k_dpm_2', 'k_dpm_2_ancestral', 'k_lms'],
       autoSeed: true,
+      autoPrompt: true,
     },
     status: {
       imageList: [],
@@ -252,7 +259,10 @@ export default {
       for (const key in this.backend.payload) {
         payload[key] = this.backend.payload[key];
       }
-      payload['prompt'] = "masterpiece, best quality, " + payload['prompt'];
+
+      if (this.options.autoPrompt) {
+        payload['prompt'] = "masterpiece, best quality, " + payload['prompt'];
+      }
 
       axios.post(this.backend.url + 'generate', payload)
           .then(response => {
